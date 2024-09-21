@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using System.Text;
 using API.Data;
 using API.Entities;
@@ -16,8 +17,8 @@ public class AccountController(DataContext context) : BaseApiController
             {
                 UserName = username,
                 PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password)),
-                PasswordSalt = hmac.key
-            }
+                PasswordSalt = hmac.Key
+            };
 
             context.Users.Add(user);
             await context.SaveChangesAsync();
