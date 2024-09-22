@@ -9,7 +9,7 @@ public class TokenService(IConfiguration config) : ITokenService
 {
     public string CreateToken(AppUser user)
     {
-        var tokenkey = config["TokeKey"] ?? throw new Exception("Tokenkey not found");
+        var tokenkey = config["TokenKey"] ?? throw new Exception("Tokenkey not found");
         if(tokenkey.Length < 64) throw new Exception("Tokenkey too short");
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenkey));
 
