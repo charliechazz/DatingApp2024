@@ -10,8 +10,8 @@ namespace API.Controllers;
 
 public class AccountController(DataContext context) : BaseApiController
 {
-        [HttpPost("register")]
-        public async Task<ActionResult<AppUser>> RegisterAsync(RegisterRequest request)
+    [HttpPost("register")]
+    public async Task<ActionResult<AppUser>> RegisterAsync(RegisterRequest request)
         {
             if (await UserExistsAsync(request.Username)) 
             {
@@ -33,7 +33,13 @@ public class AccountController(DataContext context) : BaseApiController
             return user;
         }
 
-        private async Task<bool> UserExistsAsync(string username) =>
-            await context.Users.AnyAsync(u => u.UserName.ToLower() == username.ToLower());
+    [HttpPost("login")]
+    public async Task<ActionResult<AppUser>> LoginAsync(LoginRequest request)
+    {
+
+    }
+
+    private async Task<bool> UserExistsAsync(string username) =>
+        await context.Users.AnyAsync(u => u.UserName.ToLower() == username.ToLower());
     
 }
