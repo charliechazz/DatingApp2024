@@ -23,4 +23,9 @@ export class NavComponent {
       error: error => console.log(error)
     })
   }
+
+  logout(): void{
+    this.loggedIn = false;
+  }
+
 }
