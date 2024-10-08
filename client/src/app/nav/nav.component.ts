@@ -13,19 +13,23 @@ import { RouterLink } from '@angular/router';
 })
 export class NavComponent {
   accountService = inject(AccountService);
+  private router = inject(Router);
   model: any ={};
 
   login(): void {
     this.accountService.login(this.model).subscribe({
-      next: (response) => {
-        console.log(response);
+      next: _ (response) => {
+        this.router.navigateByUrl("/members");
       },
-      error: error => console.log(error)
-    })
+      error: error => {
+        console.log(error);
+      }
+    });
   }
 
   logout(): void{
     this.accountService.logout();
+    this.router.navigateByUrl("/");
   }
 
 }
