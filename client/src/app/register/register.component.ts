@@ -11,7 +11,8 @@ import { AccountService } from '../_services/account.service';
 })
 export class RegisterComponent {
   private accountService = inject(AccountService);
-  usersFromHomeComponent = input.required<any>();
+  //usersFromHomeComponent = input.required<any>();
+  private toastr = inject(ToastrService);
   cancelRegister = output<boolean>();
   model: any = {};
 
@@ -23,6 +24,7 @@ export class RegisterComponent {
       },
       error: (error) => {
         console.log(error);
+        this.toastr.error(error.errors); 
       }
     });
   }

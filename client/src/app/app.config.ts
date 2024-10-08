@@ -9,6 +9,9 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideHttpClient(),
-    provideAnimations()
+    provideAnimations(),
+    provideToastr({
+      positionClass: "toast-bottom-right",
+    })
   ]
 };
