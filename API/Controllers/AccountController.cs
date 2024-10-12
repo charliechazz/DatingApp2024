@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using System.Security.Cryptography;
 using System.Text;
 using API.Data;
@@ -7,6 +6,7 @@ using API.Entities;
 using API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SQLitePCL;
 
 namespace API.Controllers;
 
@@ -56,13 +56,16 @@ public class AccountController(
 
             var ComputeHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(request.Password));
 
-            for (int i = 0; i < ComputeHash.Length; i++)
+            for (var i = 0; i < ComputeHash.Length; i++)
             {
                 if (ComputeHash[i] != user.PasswordHash[i])
                 {
                     return Unauthorized ("Invalid username or password");
                 }
-            }
+            };
+
+            context.Users.Add(user);
+            await context.SaveChangesAsync();
 
             return new UserResponse
             {
