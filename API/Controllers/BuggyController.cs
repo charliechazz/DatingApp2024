@@ -9,21 +9,19 @@ public class BuggyController(DataContext context) : BaseApiController
     [Authorize()]
     [HttpGet("auth")]
 
-    public ActionResult<string> GetAuth() => 
-        "secret_text";
+    public ActionResult<string> GetAuth() => "secret_text";
 
     [HttpGet("not-found")]
 
-    public ActionResult<string> GetNotFound() => 
-        NotFound();
+    public ActionResult<string> GetNotFound() => NotFound();
 
     [HttpGet("server-error")]
     
     public ActionResult<string> GetServerError()
     {
-        var result = context.Users.Find(-1) ?? 
-            throw new ArgumentException("Server error ocurred!");
-        return "random text";
+            var result = context.Users.Find(-1) ?? 
+                throw new ArgumentException("Server error ocurred!");
+            return "random text";
     }
 
     [HttpGet("bad-request")]
