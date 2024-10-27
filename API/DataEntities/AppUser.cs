@@ -6,7 +6,7 @@ public class AppUser
     public required string UserName { get; set; }
     public required byte[] PasswordHash { get; set; } = [];
     public required byte[] PasswordSalt { get; set; } = [];
-    public required DateOnly Birthday { get; set; }
+    public required DateOnly BirthDay { get; set; }
     public required string KnownAs { get; set; }
     public required DateTime Created { get; set; } = DateTime.Now;
     public required DateTime LastActive { get; set; } = DateTime.Now;

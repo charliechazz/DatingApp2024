@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, inject } from '@angular/core';
 
 @Component({
   selector: 'app-test-errors',
@@ -27,7 +28,7 @@ export class TestErrorsComponent {
   }
 
   get404Error(): void {
-    this.http.get(this.baseUrl + "buggy/").subscribe({
+    this.http.get(this.baseUrl + "buggy/not-found").subscribe({
       next: (response) => console.log(response),
       error: (error) => console.log(error)
     })
@@ -41,13 +42,12 @@ export class TestErrorsComponent {
   }
 
   get400ValidationError(): void {
-    this.http.get(this.baseUrl + "account/register", {}).subscribe({
+    this.http.post(this.baseUrl + "account/register", {}).subscribe({
       next: (response) => console.log(response),
       error: (error) => {
-        console.log(error)
+        console.log(error);
         this.validationErrors = error;
       }
     })
   }
-  
 }
