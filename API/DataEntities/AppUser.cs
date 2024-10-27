@@ -1,6 +1,4 @@
-using System.ComponentModel.DataAnnotations;
-
-namespace API.Entities;
+namespace API.DataEntities;
 
 public class AppUser
 {
@@ -10,8 +8,8 @@ public class AppUser
     public required byte[] PasswordSalt { get; set; } = [];
     public required DateOnly Birthday { get; set; }
     public required string KnownAs { get; set; }
-    public required DateTime Created { get; set; }
-    public required DateTime LastActive { get; set; }
+    public required DateTime Created { get; set; } = DateTime.Now;
+    public required DateTime LastActive { get; set; } = DateTime.Now;
     public required string Gender { get; set; }
     public string? Introduction { get; set; }
     public string? Interests { get; set; }
