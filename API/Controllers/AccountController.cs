@@ -18,25 +18,24 @@ public class AccountController(
             {
                 return BadRequest("Username already in use");
             }
-
-            return Ok();
             
-            // using var hmac = new HMACSHA512();
-            // var user = new AppUser
-            // {
-            //     UserName = request.Username,
-            //     PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(request.Password)),
-            //     PasswordSalt = hmac.Key
-            // };
+            using var hmac = new HMACSHA512();
+            
+            var user = new AppUser
+            {
+                UserName = request.Username,
+                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(request.Password)),
+                PasswordSalt = hmac.Key
+            };
 
-            // context.Users.Add(user);
-            // await context.SaveChangesAsync();
+            context.Users.Add(user);
+            await context.SaveChangesAsync();
 
-            // return new UserResponse
-            // {
-            //     UserName = user.UserName,
-            //     Token = tokenService.CreateToken(user)
-            // };
+            return new UserResponse
+            {
+                UserName = user.UserName,
+                Token = tokenService.CreateToken(user)
+            };
         }
 
     [HttpPost("login")]
@@ -54,16 +53,13 @@ public class AccountController(
 
             var ComputeHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(request.Password));
 
-            for (var i = 0; i < ComputeHash.Length; i++)
+            for (int i = 0; i < ComputeHash.Length; i++)
             {
                 if (ComputeHash[i] != user.PasswordHash[i])
                 {
                     return Unauthorized ("Invalid username or password");
                 }
-            };
-
-            context.Users.Add(user);
-            await context.SaveChangesAsync();
+            }
 
             return new UserResponse
             {
