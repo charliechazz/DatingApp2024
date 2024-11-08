@@ -428,19 +428,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\elbar\\.nuget\\packages\\": {}
+    "/Users/chazz/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\sources\\2024\\DatingApp\\API\\API.csproj",
+      "projectUniqueName": "/Users/chazz/DatingApp2024/API/API.csproj",
       "projectName": "API",
-      "projectPath": "C:\\sources\\2024\\DatingApp\\API\\API.csproj",
-      "packagesPath": "C:\\Users\\elbar\\.nuget\\packages\\",
-      "outputPath": "C:\\sources\\2024\\DatingApp\\API\\obj\\",
+      "projectPath": "/Users/chazz/DatingApp2024/API/API.csproj",
+      "packagesPath": "/Users/chazz/.nuget/packages/",
+      "outputPath": "/Users/chazz/DatingApp2024/API/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\elbar\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "/Users/chazz/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -493,7 +493,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.401/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
