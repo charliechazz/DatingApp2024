@@ -5,8 +5,15 @@ using System.Text;
 using API.DataEntities;
 using Microsoft.IdentityModel.Tokens;
 
-public class TokenService(IConfiguration config) : ITokenService
+public class TokenService : ITokenService  // Se corrigió la sintaxis de la declaración de la clase
 {
+    private readonly IConfiguration config;  // Se añadió la propiedad para almacenar la configuración
+
+    public TokenService(IConfiguration config)
+    {
+        this.config = config;
+    }
+
     public string CreateToken(AppUser user)
     {
         var tokenKey = config["TokenKey"] ?? throw new ArgumentException("TokenKey not found");
@@ -17,9 +24,11 @@ public class TokenService(IConfiguration config) : ITokenService
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
 
+        // Agregar el claim "unique_name"
         var claims = new List<Claim>
         {
-            new(ClaimTypes.NameIdentifier, user.UserName)
+            new(ClaimTypes.NameIdentifier, user.UserName),
+            new("unique_name", user.UserName)  // Este es el claim que falta
         };
 
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
