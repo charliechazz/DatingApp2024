@@ -1,15 +1,12 @@
-using System.Collections.Immutable;
 using System.Security.Cryptography;
 using System.Text;
 using API.Data;
 using API.DTOs;
-using API.Entities;
 using API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
-
 public class AccountController(
     DataContext context,
     ITokenService tokenService) : BaseApiController
