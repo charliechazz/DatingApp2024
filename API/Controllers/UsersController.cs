@@ -3,6 +3,8 @@ namespace API.Controllers;
 using API.Data;
 using API.DataEntities;
 using API.DTOs;
+using API.Extensions;
+using API.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -94,5 +96,27 @@ public class UsersController : BaseApiController
         }
 
         return BadRequest("Problem adding the photo");
+    }
+
+    [HttpPut("photo/{photoId:int}")]
+    public async Task<ActionResult> SetPhotoAsMain(int photoId)
+    {
+        var user = await _repository.GetByUsernameAsync(User.GetUserName());
+
+        if (user == null) return BadRequest("User not found");
+
+        var photo = user.Photos.FirstOrDefault(p => p.Id == photoId);
+
+        if (photo == null || photo.IsMain) return BadRequest("Can't set this photo as the main one!");
+
+        var currentMain = user.Photos.FirstOrDefault(p => p.IsMain);
+
+        if (currentMain != null) currentMain.IsMain = false;
+
+        photo.IsMain = true;
+
+        if (await _repository.SaveAllAsync()) return NoContent();
+
+        return BadRequest("There was a problem.");
     }
 }
