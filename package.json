@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@angular/forms": "^19.1.6",
+    "ngx-toastr": "^19.0.0"
+  }
+}
