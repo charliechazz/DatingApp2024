@@ -15,6 +15,7 @@ import { Photo } from '../../_models/photo';
   styleUrl: './photo-editor.component.css'
 })
 export class PhotoEditorComponent implements OnInit {
+  
   private accountService = inject(AccountService);
   private memberService = inject(MembersService);
 
