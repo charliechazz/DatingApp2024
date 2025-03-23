@@ -1,52 +1,36 @@
-import { Component, HostListener, inject, OnInit, ViewChild } from '@angular/core';
-import { Member } from '../../_models/member';
-import { AccountService } from '../../_services/account.service';
+import { Component, inject, OnInit } from '@angular/core';
 import { MembersService } from '../../_services/members.service';
-import { TabsModule } from 'ngx-bootstrap/tabs';
-import { FormsModule, NgForm } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
-import { PhotoEditorComponent } from "../photo-editor/photo-editor.component";
+import { MemberCardComponent } from '../member-card/member-card.component';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { AccountService } from '../../_services/account.service';
+import { UserParams } from '../../_models/userParams';
 
 @Component({
-  selector: 'app-member-edit',
+  selector: 'app-member-list',
   standalone: true,
-  imports: [TabsModule, FormsModule, PhotoEditorComponent],
-  templateUrl: './member-edit.component.html',
-  styleUrl: './member-edit.component.css'
+  imports: [MemberCardComponent, PaginationModule],
+  templateUrl: './member-list.component.html',
+  styleUrl: './member-list.component.css'
 })
-export class MemberEditComponent implements OnInit {
-  @ViewChild("editForm") editForm?: NgForm;
-  @HostListener("window:beforeunload", ["event"]) notify($event: any) {
-    if (this.editForm?.dirty) {
-      $event.returnValue = true;
+export class MemberListComponent implements OnInit {
+  private accountService = inject(AccountService);
+  membersService = inject(MembersService);
+  userParams = new UserParams(this.accountService.currentUser());
+  
+  ngOnInit(): void {
+    if (!this.membersService.paginatedResult()) {
+      this.loadMembers();
     }
   }
-  member?: Member;
-  public accountService = inject(AccountService);
-  private membersService = inject(MembersService);
-  private toastr = inject(ToastrService);
 
-  ngOnInit(): void {
-    this.loadMember();
+  loadMembers() {
+    this.membersService.getMembers(this.userParams);
   }
 
-  loadMember() {
-    const user = this.accountService.currentUser();
-    if (!user) return;
-    this.membersService.getMember(user.username).subscribe({
-      next: member => this.member = member
-    })
-  }
-
-  updateMember() {
-    this.membersService.updateMember(this.editForm?.value).subscribe({
-      next: _ => {
-        this.toastr.success("Profile updated!");
-        this.editForm?.reset(this.member);
-      }
-    });
-  }
-  onMemberChange(event: Member) {
-    this.member = event;
+  pageChanged(event: any) {
+    if (this.userParams.pageNumber !== event.page) {
+      this.userParams.pageNumber = event.page;
+      this.loadMembers();
+    }
   }
 }
