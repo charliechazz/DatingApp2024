@@ -1,66 +1,56 @@
-<div class="row">
-    <div class="col-4">
-        <div class="card">
-            <img src="{{member.photoUrl || './assets/user.png'}}" alt="{{member.knownAs}}" class="card-img img-thumbnail">
-            <div class="card-body">
-                <div>
-                    <strong>Location:</strong>
-                    <p>{{member.city}}, {{member.country}}</p>
-                </div>
-                <div>
-                    <strong>Age:</strong>
-                    <p>{{member.age}}</p>
-                </div>
-                <div>
-                    <strong>Last active:</strong>
-                    <p>{{member.lastActive | timeago}}</p>
-                </div>
-                <div>
-                    <strong>Member since:</strong>
-                    <p>{{member.created | date: "MMMM YYYY"}}</p>
-                </div>
-            </div>
-            <div class="card-footer">
-                <div class="btn-group d-flex">
-                    <button class="btn btn-primary">Like</button>
-                    <button (click)="selectTab('Messages')" class="btn btn-success">Message</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-8">
-        <tabset class="member-tabset" #memberTabs>
-            <tab heading="About {{member.knownAs}}" (selectTab)="onTabActivated($event)">
-                <h4>Description</h4>
-                <p>{{member.introduction}}</p>
-                <h4>Looking for</h4>
-                <p>{{member.lookingFor}}</p>
-            </tab>
-            <tab heading="Interests" (selectTab)="onTabActivated($event)">
-                <h4>Interests</h4>
-                <p>{{member.interests}}</p>
-            </tab>
-            <tab heading="Photos" #photoTab="tab" (selectTab)="onTabActivated($event)">
-                @if (photoTab.active) {
-                    <gallery
-                        [items]="images"
-                        class="gallery"
-                        thumbs thumbdisabled="false" thumbPosition="left" thumbimagesize="cover" thumbscrolldisabled="false" thumbautosize="false"
-                        bullets bulletdisabled="false" bulletPosition="bottom"
-                        counter counterPosition="top"
-                        orientation="horizontal"
-                        scrolldisabled="false"
-                        itemautosize="false" autoheight="false" dir="ltr"
-                        style="--g-thumb-width: 120px; --g-thumb-height: 90px; --slider-width: 998px; --slider-height: 409px;">
-                </gallery>
+<div class="card">
+    <div class="card-body">
+        @if (messages().length === 0) {
+            <p>Start chating, no messages yet!</p>
+        } @else {
+            <ul class="chat">
+                @for (message of messages(); track message.id) {
+                    <li>
+                        <div>
+                            <span class="chat-img float-end">
+                                <img class="rounded-circle"
+                                    src="{{message.senderPhotoUrl || './assets/user.png'}}" alt="Sender" >
+                            </span>
+                            <div class="chat-body">
+                                <div class="header">
+                                    <small class="text-muted">
+                                        <span class="fa fa-clock-o"> {{message.messageSent | timeago}}</span>
+                                        @if (!message.dateRead && message.senderUsername !== username()) {
+                                            <span class="text-danger">(unread)</span>
+                                        }
+                                        @if (message.dateRead && message.senderUsername !== username()) {
+                                            <span class="text-success">(read {{message.dateRead | timeago}})</span>
+                                        }
+                                    </small>
+                                </div>
+                                <p>{{message.content}}</p>
+                            </div>
+                        </div>
+                    </li>
                 }
-            </tab>
-            <tab heading="Messages" (selectTab)="onTabActivated($event)">
-                <app-member-messages
-                    [username]="member.userName"
-                    [messages]="messages">
-                </app-member-messages>
-            </tab>
-        </tabset>
+            </ul>
+        }
+    </div>
+    <div class="card-footer">
+        <form #messageForm="ngForm" (ngSubmit)="sendMessage()">
+            <div class="input group">
+                <input
+                    name="messageContent"
+                    required
+                    [(ngModel)]="messageContent"
+                    type="text"
+                    class="form-control input-sm"
+                    placeholder="Send a private message">
+                <div class="input-group-append">
+                    <button
+                        [disabled]="!messageForm.valid"
+                        class="btn btn-primary"
+                        type="submit">Send</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
+
+
+
