@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250521132533_MessageGroupsAdded")]
+    [Migration("20250524002021_MessageGroupsAdded")]
     partial class MessageGroupsAdded
     {
         /// <inheritdoc />
@@ -232,7 +232,7 @@ namespace API.Data.Migrations
 
                     b.HasKey("Name");
 
-                    b.ToTable("Groups");
+                    b.ToTable("MessageGroups");
                 });
 
             modelBuilder.Entity("API.DataEntities.Photo", b =>
